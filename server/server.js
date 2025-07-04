@@ -1,2 +1,21 @@
-import express from 'express'
-import cors from 'cors'
+require('@dotenvx/dotenvx').config()
+const express = require ('express')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('jsonwebtoken')
+const cors = require('cors')
+
+//Routes
+const adminRoute = require('./routes/adminRoutes')
+const userRoute  = require('./routes/userRoutes')
+
+const connectDb = require('./mongoDb/connectDb')
+
+const app = express()
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+app.use(cors())
+app.use('/admin',adminRoute)
+app.use('/user',userRoute)
+// console.log(process.env.PORT)
+connectDb()
+app.listen(process.env.PORT,()=>console.log(`server_runnning on ${process.env.PORT}`))
