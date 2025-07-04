@@ -1,7 +1,7 @@
 require('@dotenvx/dotenvx').config()
 const express = require ('express')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 const cors = require('cors')
 
 //Routes
