@@ -154,6 +154,10 @@ const MESSAGES = Object.freeze({
    INVALIID_NAME_FORMAT: "Invalid name format" ,
    NO_CHANGES_FOUND : "No changes detected" ,
    USER_DATA_CHANGE_SUCCESS:"User details changed successfully",
+   NO_FILE_PROVIDED:"No file Provided",
+   INVALID_FILE_FORMAT:"Invalid file format",
+   FILE_SIZE_EXCEEDED:'File Size exceeded'
+
    
 
 

@@ -3,12 +3,13 @@ const express = require ('express')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const cors = require('cors')
+const cloudinary = require('cloudinary').v2
 
 //Routes
 const adminRoute = require('./routes/adminRoutes')
 const userRoute  = require('./routes/userRoutes')
 
-const connectDb = require('./mongoDb/connectDb')
+const connectDb = require('./config/connectDb')
 
 const app = express()
 app.use(express.json())

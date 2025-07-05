@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const UserSchema = mongoose.Schema({
     email:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
     hashedPassword:{
         type:String,
@@ -16,6 +17,13 @@ const UserSchema = mongoose.Schema({
     mobile:{
         type:String
     },
+    isBlocked:{
+        type:Boolean,
+        default:false
+    },
+    profileImage:{
+        type:String
+    }
 })
 
 module.exports= mongoose.model('User',UserSchema)

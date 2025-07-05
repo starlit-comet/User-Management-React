@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { type } = require('os')
 
 const AdminSchema = mongoose.Schema({
     email:{
@@ -19,4 +18,4 @@ const AdminSchema = mongoose.Schema({
     },
 })
 
-export default mongoose.model('Admin',AdminSchema)
+module.exports= mongoose.model('Admin',AdminSchema)
