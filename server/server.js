@@ -1,4 +1,4 @@
-require('@dotenvx/dotenvx').config()
+require ('@dotenvx/dotenvx').config()
 const express = require ('express')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
@@ -12,11 +12,15 @@ const userRoute  = require('./routes/userRoutes')
 const connectDb = require('./config/connectDb')
 
 const app = express()
+const corsOptions={
+    origin:`http://localhost:${process.env.FRONTEND_PORT}`,
+    credentials:true,
+}
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
-app.use(cors())
+app.use(cors(corsOptions))
 app.use('/admin',adminRoute)
 app.use('/user',userRoute)
 // console.log(process.env.PORT)
 connectDb()
-app.listen(process.env.PORT,()=>console.log(`server_runnning on ${process.env.PORT}`))
+app.listen(process.env.SERVER_PORT,()=>console.log(`server_runnning on ${process.env.SERVER_PORT}`))
