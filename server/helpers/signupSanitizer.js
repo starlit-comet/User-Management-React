@@ -4,7 +4,7 @@ function validateAndSanitize(data){
 
     // sanitising naming part
 
-    sanitized.name = data.name.trim()
+    sanitized.name = data.name?.trim()
     if(!sanitized.name){
         errors.name='Name is required'
     } else if(! /^[A-Za-z\s]+$/.test(sanitized.name)){
@@ -16,7 +16,7 @@ function validateAndSanitize(data){
     }
 
     //sanitising email part
-    sanitized.email = data.email.trim()
+    sanitized.email = data.email?.trim()
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!sanitized.email){
         errors.email='Email is required'
@@ -27,14 +27,14 @@ function validateAndSanitize(data){
     }
 
     //sanitising password
-    sanitized.password = data.password.trim();
+    sanitized.password = data.password?.trim();
      if(!sanitized.password){
         errors.password='Password is required'
      } else if (sanitized.password.length <8){
         errors.password='Password must be at least 8 characters'
      }
 
-     sanitized.confirmPassword=data.confirmPassword.trim()
+     sanitized.confirmPassword=data.confirmPassword?.trim()
      if(sanitized.confirmPassword !== sanitized.password){
         errors.confirmPassword='Passwords do not match'
      }
