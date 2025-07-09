@@ -3,7 +3,7 @@
 import React,{useState,useEffect,useRef} from "react";
 import { toast } from "sonner";
 import { useSelector,useDispatch } from "react-redux";
-import { changeToSignIn,changeToSignUp,toggleShowPassword,toggleShowConfirmPassword } from "./authSlice";
+import { changeToSignIn,changeToSignUp,toggleShowPassword,toggleShowConfirmPassword } from "./credentialsSlice";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,6 +23,7 @@ import { useCreateUserMutation,useSignInUserMutation } from "./userLogApiSlice";
 
 
 function EnhancedLoginCard() {
+  // const [signState,setSignState] = useState('Sign In')
   const initialFormData = {
     email:'',
     name:'',
@@ -38,7 +39,7 @@ function EnhancedLoginCard() {
     const{name,value} = e.target
     signUpFormDataRef.current[name]=value
 
-    console.log(signUpFormDataRef.current,'changed data')
+    // console.log(signUpFormDataRef.current,'changed data')
   }
 
 

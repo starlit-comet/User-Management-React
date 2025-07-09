@@ -1,7 +1,9 @@
 import './App.css'
 import { Toaster } from 'sonner'
 import EnhancedLoginCard from './features/user_log_page/EnhancedLoginCard'
-// import Counter from './features/counter/counter'
+import UserHomePage from './pages/userHome/UserHomePage'
+import { Route,Routes,useNavigate } from 'react-router-dom'
+import AdminPages from './Routes/AdminRouter'
   
   
   
@@ -10,7 +12,11 @@ import EnhancedLoginCard from './features/user_log_page/EnhancedLoginCard'
   return (
     <>
     <Toaster richColors position='top-right' expand={true} />
-    <EnhancedLoginCard />
+    <Routes >
+    <Route path='/login' element={<EnhancedLoginCard />} />
+    <Route path='/dashboard' element={<UserHomePage/>} />
+    <Route path='/admin/*' element ={<AdminPages />} />
+    </Routes>
     
   
     </>

@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const authSlice = createSlice({
+const signIn_SignUp_Slice = createSlice({
     name:'signState',
     initialState:{
-        value:'Sign Up',
+        value:'Sign In',
         showPassword:false,
         showConfirmPassword:false,
-       
     },
     reducers:{
         changeToSignUp:(state)=>{
@@ -20,10 +19,12 @@ const authSlice = createSlice({
         },
         toggleShowConfirmPassword:(state)=>{
             state.showConfirmPassword=!state.showConfirmPassword
-        },
-
+        }, 
     }
 })
 
-export const {changeToSignIn,changeToSignUp,toggleShowPassword,toggleShowConfirmPassword} = authSlice.actions
-export default authSlice.reducer
+export const {changeToSignIn,changeToSignUp,toggleShowPassword,toggleShowConfirmPassword} = signIn_SignUp_Slice.actions
+
+
+
+export default signIn_SignUp_Slice.reducer

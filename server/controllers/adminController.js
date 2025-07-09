@@ -15,6 +15,7 @@ const loginController = async(req,res)=>{
         const{email,password} = req.body
         const validatedCredentials = loginSanitiser({email,password})
         if(!validatedCredentials.isValid){
+            console.log(validatedCredentials)
             return res.status(STATUS_CODES.BAD_REQUEST).json({errors:validatedCredentials.errors})
         }
         const adminEmail = validatedCredentials.sanitizedData.email
