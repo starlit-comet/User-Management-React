@@ -19,6 +19,7 @@ import {
   Calendar,
   Activity,
 } from "lucide-react"
+import { toast } from 'sonner'
 const SettingsSection = () => {
   return (
     <><div className="space-y-6">
@@ -43,7 +44,9 @@ const SettingsSection = () => {
                            </div>
                          </div>
                        </div>
-                       <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white">
+                       <Button
+                       onClick={()=>toast.warning('Edit function is not Implemented')}
+                        className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white">
                          Edit Profile
                        </Button>
                      </CardContent>

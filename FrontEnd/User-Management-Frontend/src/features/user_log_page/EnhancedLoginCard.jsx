@@ -4,6 +4,7 @@ import React,{useState,useEffect,useRef} from "react";
 import { toast } from "sonner";
 import { useSelector,useDispatch } from "react-redux";
 import { changeToSignIn,changeToSignUp,toggleShowPassword,toggleShowConfirmPassword } from "./credentialsSlice";
+import { userLogout,setUserToken } from "../jwt/userJwtSlice";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,10 +21,11 @@ import { Eye, EyeOff } from "lucide-react";
 
 //form handlers
 import { useCreateUserMutation,useSignInUserMutation } from "./userLogApiSlice";
-
+import { useNavigate } from "react-router-dom";
 
 function EnhancedLoginCard() {
   // const [signState,setSignState] = useState('Sign In')
+  const navigate = useNavigate()
   const initialFormData = {
     email:'',
     name:'',
@@ -50,7 +52,7 @@ function EnhancedLoginCard() {
   // console.log(obj)
   const dispatch = useDispatch()
 
-
+  const userData=useRef({name:'',email:''})
   const[signInUser,{isSignInLoading,isSignInSuccess,isSignInError}] = useSignInUserMutation()
   const handleSignInClick = async ()=>{
     if(signState !== 'Sign In') return 
@@ -59,8 +61,13 @@ function EnhancedLoginCard() {
     try {
       const res=await signInUser({email:signinEmail,password:signinPassword}).unwrap()
       console.log(res,'sign in try data')
+      if(res.token){
+        userData.current=res.userDetails
+        dispatch(setUserToken(res.token))
 
+      }
       toast .success('User Logged In')
+      navigate('/dashboard')
     } catch (error) {
       console.log(error,'sign in catch data')
       if(error.error){

@@ -1,17 +1,27 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, Shield, Lock } from "lucide-react"
-
-import { useSignInAdminMutation } from "@/features/adminLogin/adminSigninSlice"
+import { setToken } from "@/features/jwt/authSlice"
+import { useSignInAdminMutation,useVerifyAdminJwtQuery } from "@/features/adminLogin/adminSigninSlice"
 import { toast } from "sonner"
-import { data } from "react-router-dom"
-function AdminLoginPage() {
+import { Navigate, useNavigate } from "react-router-dom"
+ function  AdminLoginPage() {
+  const navigate = useNavigate()
+  const jwtToken = localStorage.getItem('adminToken')
+  const {data,isSuccess} = useVerifyAdminJwtQuery(undefined,{skip:!jwtToken})
+  console.log(data,isSuccess,'login data')
+  useEffect(()=>{
+    if(isSuccess) navigate('/admin/dashboard')
+  },[isSuccess])
+ 
+
+  const dispatch =  useDispatch()
   const initialFormData = {
     email: "",
     password: "",
@@ -46,7 +56,10 @@ function AdminLoginPage() {
           }
         }
       }else if(res.data?.message && res.data?.token){
+        const jwtToken = res.data.token
+        dispatch(setToken(jwtToken))
         toast.success("Login Success")
+        navigate('/admin/dashboard')
       }
     } catch (error) {
       console.log(error,'admin catch data')

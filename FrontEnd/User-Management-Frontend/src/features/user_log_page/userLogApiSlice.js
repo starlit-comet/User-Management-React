@@ -34,5 +34,23 @@ export const userSignInApi = createApi({
     })
 })
 
+export const isUserJwtValid = createApi({
+    reducerPath:'isUserJwtValid',
+    baseQuery:fetchBaseQuery({baseUrl:'http://localhost:5678'}),
+    endpoints:(builder)=>({
+        isJwtValid:builder.mutation({
+            query:(formData)=>({
+                url:'/user/jwtCheck',
+                method:'POST',
+                body:formData,
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+        })
+    })
+})
+
 export const {useCreateUserMutation} = userSignUpApi
 export const {useSignInUserMutation} = userSignInApi
+export const {useJwtAuthUserMutation} = isUserJwtValid

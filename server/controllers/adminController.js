@@ -45,9 +45,17 @@ const getUsersData=async(req,res)=>{
         console.log(error)
     }
 }
+const verifyJwtToken = async (req,res)=>{
+    console.log(req.headers)
+    const token = req.headers.authorization?.split(' ')[1]
+    if(!token) return res.status(STATUS_CODES.UNAUTHORIZED)
+    try {
+        const decoded = jwt.verify(token,process.env.JWT_SECRET)
+        return res.status(STATUS_CODES.OK).json({Admin:decoded})
+    } catch (error) {
+        console.log(error)
+        return res.status(STATUS_CODES.FORBIDDEN).json({message:"Invalid Token"})
+    }
+}
 
-
-
-
-
-module.exports={loginController,getUsersData}
+module.exports={loginController,getUsersData,verifyJwtToken}

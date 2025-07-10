@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { toast } from "sonner"
 import {
   LayoutDashboard,
   Users,
@@ -20,9 +21,21 @@ import {
 import SettingsSection from "./tabs/SettingsSection"
 import HomeSection from "./tabs/HomeSection"
 import UsersSection from "./tabs/UsersSection"
+import { Navigate, useNavigate } from "react-router-dom"
+import { useVerifyAdminJwtQuery } from "@/features/adminLogin/adminSigninSlice"
 
 const AdminHomePage = () => {
-  const [activeTab, setActiveTab] = useState("dashboard")
+  const navigate = useNavigate()
+  const jwtToken = localStorage.getItem('adminToken')
+   const {data,isError,isLoading} = useVerifyAdminJwtQuery(undefined,{skip:!jwtToken})
+    if(!jwtToken) navigate("/admin/login")
+    useEffect(()=>{
+      if( isError){
+        navigate('/admin/login')
+      }
+    },[jwtToken,isError])
+//  if(isLoading) toast.loading('verifying Credentials')
+  const [activeTab, setActiveTab] = useState("users")
 
   const tabs = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -52,6 +65,13 @@ const AdminHomePage = () => {
       default:
         return null
     }
+  }
+  function handleSignOut(){
+    toast.success("Logout success")
+    localStorage.removeItem('adminToken')
+    navigate('/admin/login')
+
+
   }
 
   return (
@@ -96,9 +116,7 @@ const AdminHomePage = () => {
           </div>
           <Button
             className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-2 transition-all duration-200 transform hover:scale-105"
-            onClick={() => {
-              /* Handle logout */
-            }}
+            onClick={handleSignOut}
           >
             <LogOut className="w-4 h-4" />
             Logout
@@ -130,7 +148,7 @@ const AdminHomePage = () => {
 
         {/* Tab Content */}
         <Card className="bg-slate-800/40 backdrop-blur-xl border-blue-500/30 shadow-2xl shadow-blue-500/10">
-          <CardContent className="p-8">{renderTabContent()}</CardContent>
+          <CardContent className="p-8">{renderTabContent('users')}</CardContent>
         </Card>
       </div>
     </div>
