@@ -9,6 +9,7 @@ const uploadToCloudinary =  (file,folder='Default_Folder')=>{
     return new Promise((resolve,reject)=>{
 
         if(!file || !file.buffer ||!file.mimetype){
+            console.log('no file got in cloudinary')
             return reject({message:MESSAGES.NO_FILE_PROVIDED})
         }
         

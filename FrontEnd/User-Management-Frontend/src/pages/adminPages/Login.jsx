@@ -40,12 +40,15 @@ import { Navigate, useNavigate } from "react-router-dom"
   async function handleSignInClick() {
     const signInEmail = signInFormDataRef.current.email
     const signinPassword = signInFormDataRef.current.password
-    try {
+    try { 
       const res= await signInAdmin({email:signInEmail,password:signinPassword})
       console.log(res,'admin try data')
       if(res.error){
         if(res.error?.error){
           toast.error(res.error.error)
+        }
+        if(res?.error?.data?.messages){
+          toast.error(res.error.data.messages)
         }
         if(res.error?.data?.message){
         toast.error(res.error?.data?.message ??'failed to login')}
@@ -59,6 +62,7 @@ import { Navigate, useNavigate } from "react-router-dom"
         const jwtToken = res.data.token
         dispatch(setToken(jwtToken))
         toast.success("Login Success")
+        signInFormDataRef.current={...initialFormData}
         navigate('/admin/dashboard')
       }
     } catch (error) {

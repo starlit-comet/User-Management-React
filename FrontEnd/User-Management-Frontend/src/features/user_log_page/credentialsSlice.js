@@ -23,6 +23,20 @@ const signIn_SignUp_Slice = createSlice({
     }
 })
 
+const userDetailsSlice = createSlice({
+    name:'userDetails',
+    initialState:{
+        name:'',
+        email:'',
+        profileImage:'',
+        mobile:'',
+        isBlocked:''
+    },
+    reducers:{
+        
+    }
+})
+
 export const {changeToSignIn,changeToSignUp,toggleShowPassword,toggleShowConfirmPassword} = signIn_SignUp_Slice.actions
 
 

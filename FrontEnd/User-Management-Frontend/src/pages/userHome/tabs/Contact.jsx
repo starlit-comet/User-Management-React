@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { User, Home, Phone, LogOut } from "lucide-react"
+import { toast } from 'sonner'
 const Contact = () => {
   return (
     <>
@@ -32,7 +33,8 @@ const Contact = () => {
                       </div>
                       <div className="space-y-4">
                         <h3 className="text-xl font-semibold text-white">Quick Contact</h3>
-                        <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+                        <Button onClick={()=>toast.info('Message Feature is in devlopment stage!!')}
+                         className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
                           Send Message
                         </Button>
                       </div>

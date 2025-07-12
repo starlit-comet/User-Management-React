@@ -34,6 +34,23 @@ export const userSignInApi = createApi({
     })
 })
 
+export const userProfilePicUploadApi = createApi({
+    reducerPath:'userProfilePicUploadApi',
+    baseQuery:fetchBaseQuery({baseUrl:'http://localhost:5678'}),
+    endpoints:(builder)=>({
+        addProfilePic:builder.mutation({
+            query:(formData)=>({
+                url:'/user/upload/profileImage',
+                method:'POST',
+                body:formData,
+                headers:{
+                    'Authorization':`bearer ${localStorage.getItem('userToken')??undefined}`
+                }
+            })
+        })
+    })
+})
+
 export const isUserJwtValid = createApi({
     reducerPath:'isUserJwtValid',
     baseQuery:fetchBaseQuery({baseUrl:'http://localhost:5678'}),
@@ -41,10 +58,11 @@ export const isUserJwtValid = createApi({
         isJwtValid:builder.mutation({
             query:(formData)=>({
                 url:'/user/jwtCheck',
-                method:'POST',
-                body:formData,
+                method:'GET',
+                // body:formData.append(localStorage.getItem('userToken')||null),
                 headers:{
-                    'Content-Type':'application/json'
+                    'Content-Type':'application/json',
+                    'Authorization':`bearer ${localStorage.getItem('userToken')||''}`
                 }
             })
         })
@@ -54,3 +72,4 @@ export const isUserJwtValid = createApi({
 export const {useCreateUserMutation} = userSignUpApi
 export const {useSignInUserMutation} = userSignInApi
 export const {useJwtAuthUserMutation} = isUserJwtValid
+export const{useAddProfilePicMutation} = userProfilePicUploadApi

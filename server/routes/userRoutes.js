@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-
+const jwtAuth = require('../middlewares/jwtVerify')
 
 // multer for img stream
 const multer = require('multer')
@@ -12,6 +12,8 @@ const userController = require('../controllers/userController')
 
 router.post('/login',userController.loginController)
 router.post('/signup',userController.signupController)
-router.post('/upload/profileImage',upload.single('image'),userController.imageUpload)
+// router.get('/getid/:id/:id1',userController.newControl)
+router.post('/upload/profileImage',jwtAuth.verifyToken,upload.single('image'),userController.imageUpload)
+router.get('/jwtCheck',jwtAuth.verifyToken,userController.returnJwtRes)
 
 module.exports = router

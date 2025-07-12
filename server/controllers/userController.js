@@ -8,7 +8,8 @@ const STATUSCODES = require("../utils/statuscodes.js");
 const MESSAGES = require("../utils/responseMessages.js");
 const UserSchema = require("../models/UserDataScheme.js");
 // const multer = require('multer')
-const uploadToCloudinary = require('../helpers/uploadToCloudinary.js')
+const uploadToCloudinary = require('../helpers/uploadToCloudinary.js');
+const { STATUS_CODES } = require("http");
 
 
 const loginController = async (req, res) => {
@@ -30,8 +31,9 @@ const loginController = async (req, res) => {
     const userDetails={
         name:user.name,
         email:user.email,
-        phone:user?.phone,
-        pic:user?.profileImage
+        phone:user?.mobile,
+        pic:user?.profileImage,
+        isBlocked:user.isBlocked,
     }
     return res
       .status(STATUSCODES.OK)
@@ -92,9 +94,14 @@ const signupController = async (req, res) => {
 };
 
 const imageUpload = async(req,res)=>{
+  // console.log(req.headers,'req object')
     try {
+      console.log(req.jwtResult,'result from img upload fn')
         const result = await uploadToCloudinary(req.file,process.env.CLOUDINARY_USER_FOLDER_PATH);
-        res.json({url:result.secure_url})
+        const userData = await UserSchema.findOne({email:req.jwtResult.email},'-hashedPassword')
+        userData.profileImage=result.secure_url
+        await userData.save()
+        res.json({url:result.secure_url,userData})
     } catch (error) {
         if(error.message){
             return res.status(STATUSCODES.BAD_REQUEST).json({error:error.message})
@@ -103,5 +110,28 @@ const imageUpload = async(req,res)=>{
         res.status(STATUSCODES.INTERNAL_SERVER_ERROR).json({message:error.message})
     }
 }
+const newControl = async(req,res)=>{
+  try {
+    console.log(req)
+    
+  } catch (error) {
+    
+  }
+}
 
-module.exports = { loginController, signupController,imageUpload };
+const returnJwtRes = async(req,res)=>{
+  try {
+    if(!req.jwtResultValid){
+        return res.status(STATUS_CODES.UNAUTHORIZED).json({message:MESSAGES.USER_NOT_AUTHENTICATED})
+    }
+
+    const userEmail = req.jwtResult
+    console.log(userEmail,'jwt validator')
+
+    return res.status(STATUS_CODES.OK).json({})
+  } catch (error) {
+    
+  }
+}
+
+module.exports = { loginController, signupController,imageUpload,newControl, returnJwtRes};

@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 const connetDb = async()=>{
     try {
-        const connection = await mongoose.connect(process.env.MONGO_URI,{})
+        const connection = await mongoose.connect(process.env.MONGO_URI_LOCALHOST,{})
         console.log(`MongoDb Cloud Connected`)
     } catch (error) {
         console.log(error)

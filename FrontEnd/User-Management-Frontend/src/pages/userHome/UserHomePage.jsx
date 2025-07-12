@@ -6,10 +6,28 @@ import { Card, CardContent } from "@/components/ui/card"
 import { User, Home, Phone, LogOut } from "lucide-react"
 import UserHome from "./tabs/Home"
 import Profile from "./tabs/Profile"
+import { userLogout } from "@/features/jwt/userJwtSlice"
+import {useDispatch,useSelector} from 'react-redux'
+import {useNavigate} from 'react-router-dom'
 import Contact from "./tabs/Contact"
 const UserHomePage = () => {
-  const [activeTab, setActiveTab] = useState("home")
 
+  const {userName,
+        userEmail,
+        userPic,
+        isUserBlocked,
+        userMobile,
+      } = useSelector(s=>s.userState)
+  
+  console.log(userName,
+        userEmail,
+        userPic,
+        isUserBlocked,
+        userMobile,'state user details')
+
+  const [activeTab, setActiveTab] = useState("home")
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const tabs = [
     { id: "home", label: "Home", icon: Home },
     { id: "profile", label: "Profile", icon: User },
@@ -20,15 +38,27 @@ const UserHomePage = () => {
     switch (activeTab) {
       case "home":
         return (
-          <UserHome />
+          <UserHome userDetails={{userName,
+        userEmail,
+        userPic,
+        isUserBlocked,
+        userMobile}} />
         )
       case "profile":
         return (
-          <><Profile/></>
+          <><Profile userDetails={{userName,
+        userEmail,
+        userPic,
+        isUserBlocked,
+        userMobile}}/></>
         )
       case "contact":
         return (
-          <Contact />
+          <Contact userDetails={{userName,
+        userEmail,
+        userPic,
+        isUserBlocked,
+        userMobile}}/>
         )
       default:
         return null
@@ -65,7 +95,8 @@ const UserHomePage = () => {
           <Button
             className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-2 transition-all duration-200 transform hover:scale-105"
             onClick={() => {
-              /* Handle logout */
+             dispatch(userLogout()) 
+             navigate('/login')
             }}
           >
             <LogOut className="w-4 h-4" />
