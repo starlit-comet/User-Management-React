@@ -3,20 +3,13 @@ import React from "react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useGetAllUsersDataQuery } from "@/features/adminLogin/adminSigninSlice";
-import {
-  Command,
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
-} from "@/components/ui/command";
+
+import DialogDemo from './AddNewUser'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+
+
 import {
   LayoutDashboard,
   Users,
@@ -68,12 +61,14 @@ const UsersSection = () => {
               Manage user accounts and permissions
             </p>
           </div>
-          <Button
-            onClick={() => toast.warning("Add User feature not Implemented")}
+      
+      <DialogDemo />
+          {/* <Button
+            onClick={DialogDemo}
             className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white"
           >
             Add New User
-          </Button>
+          </Button> */}
         </div>
 
         <Card className="bg-slate-800/40 backdrop-blur-sm border-blue-500/30">
@@ -83,7 +78,7 @@ const UsersSection = () => {
               User Directory ({users?.length} users)
             </CardTitle>
           </CardHeader>
-          <Command>
+          {/* <Command>
             <CommandInput placeholder="Type a command or search..." />
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
@@ -99,7 +94,7 @@ const UsersSection = () => {
                 <CommandItem>Settings</CommandItem>
               </CommandGroup>
             </CommandList>
-          </Command>
+          </Command> */}
           <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full">

@@ -41,8 +41,11 @@ const userSlice= createSlice({
             state.isUserBlocked=isBlocked
             state.userMobile=phone
         },
+        setUserProfilePic:(state,action)=>{
+            state.userPic=action.payload
+        }
     }
 })
 
-export const{setUserToken,userLogout,setUserDetails} = userSlice.actions
+export const{setUserToken,userLogout,setUserDetails,setUserProfilePic} = userSlice.actions
 export default userSlice.reducer

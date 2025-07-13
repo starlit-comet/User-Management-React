@@ -77,7 +77,6 @@ function EnhancedLoginCard() {
         dispatch(setUserDetails(res.userDetails))
         signUpFormDataRef.current = { ...initialFormData };
         toast.success("User Logged In");
-        console.log(res.userDetails,'userDetails')
         // localStorage.setItem('userName',res.userDetails.name)
         // console.log(localStorage.getItem('userName'),'got data from ls')
         navigate("/dashboard");
@@ -90,7 +89,6 @@ function EnhancedLoginCard() {
       const errObj = error.data?.errors;
       if (errObj) {
         for (const [key, val] of Object.entries(errObj)) {
-          console.log(key, val);
           toast.warning(`${val}`);
         }
       }
@@ -109,7 +107,6 @@ function EnhancedLoginCard() {
 
     try {
       const res = await createUser(signUpFormDataRef).unwrap();
-      console.log(res, "response data");
 
       // console.log('usercreated')
 
@@ -235,6 +232,7 @@ function EnhancedLoginCard() {
               </div>
               <div className="relative">
                 <Input
+                  
                   onChange={handleInputChange}
                   name="password"
                   autoComplete="password"

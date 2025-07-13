@@ -101,7 +101,7 @@ const imageUpload = async(req,res)=>{
         const userData = await UserSchema.findOne({email:req.jwtResult.email},'-hashedPassword')
         userData.profileImage=result.secure_url
         await userData.save()
-        res.json({url:result.secure_url,userData})
+        res.json({url:result.secure_url,userData}) 
     } catch (error) {
         if(error.message){
             return res.status(STATUSCODES.BAD_REQUEST).json({error:error.message})

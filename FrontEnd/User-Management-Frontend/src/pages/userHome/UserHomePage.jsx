@@ -19,11 +19,7 @@ const UserHomePage = () => {
         userMobile,
       } = useSelector(s=>s.userState)
   
-  console.log(userName,
-        userEmail,
-        userPic,
-        isUserBlocked,
-        userMobile,'state user details')
+ 
 
   const [activeTab, setActiveTab] = useState("home")
   const dispatch = useDispatch()
