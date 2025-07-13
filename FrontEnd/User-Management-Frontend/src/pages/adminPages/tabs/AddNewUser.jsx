@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState,useRef } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -15,8 +15,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, UserPlus, Shield } from "lucide-react"
-
+import { useCreateUserMutation } from "@/features/user_log_page/userLogApiSlice"
+import { toast } from "sonner"
 function AdminUserDialog() {
+  const [createUser,{isLoading,isError,isSuccess}] = useCreateUserMutation()
   const initialFormData={
     name: "",
     email: "",
@@ -25,15 +27,43 @@ function AdminUserDialog() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 //   const [selectedFile, setSelectedFile] = useState(null)
-  const [signUpFormData,setSignUpFormData] = useState({...initialFormData})
+  const signUpFormData = useRef({...initialFormData})
   const [errors, setErrors] = useState({ ...initialFormData })
+  const handleInputChange=(name,value)=>{
+    // const{name,value}=e.target
+    signUpFormData.current[name]=value
+  }
 
 //   const handleFileChange = (e) => {
 //     const file = e.target.files[0]
 //     setSelectedFile(file)
 //   }
-  function handleCreateUser(){
+ async function handleCreateUser(){
+    try {
+      const res = await createUser(signUpFormData).unwrap();
 
+      // console.log('usercreated')
+
+      toast.success("success! new User created");
+      signUpFormData.current={...initialFormData}
+    } catch (error) {
+      console.log(error, "error data");
+      if (error.error) {
+        toast.error(`${error.error}`);
+      }
+      const errObj = error.data?.errors;
+      if (errObj) {
+        for (const [key, val] of Object.entries(errObj)) {
+          console.log(key, val);
+          toast.warning(`${val}`);
+        }
+      }
+      const errMsg = error.data?.message;
+      console.log(errMsg, errObj);
+      if (errMsg) {
+        toast.error(`${errMsg}`);
+      }
+    }
   }
 
   const validateField = (name, value) => {
@@ -79,7 +109,7 @@ function AdminUserDialog() {
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[500px] bg-slate-900/95 backdrop-blur-xl border-blue-500/30 shadow-2xl shadow-blue-500/10">
-          <form className="space-y-6">
+          <div  className="space-y-6">
             <DialogHeader className="space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">
@@ -132,7 +162,10 @@ function AdminUserDialog() {
                   className={`bg-slate-800/50 border-blue-500/30 text-white placeholder:text-blue-300/60 focus:border-cyan-400 focus:ring-cyan-400/20 transition-all duration-200 ${
                     errors.name ? "border-red-400 focus:border-red-400 focus:ring-red-400/20" : ""
                   }`}
-                  onChange={(e) => validateField("name", e.target.value)}
+                  onChange={(e) => {
+                    validateField("name", e.target.value)
+                    handleInputChange(e.target.name,e.target.value)
+                  }}
                 />
                 {errors.name && (
                   <p className="text-red-400 text-sm flex items-center gap-1">
@@ -163,7 +196,11 @@ function AdminUserDialog() {
                   className={`bg-slate-800/50 border-blue-500/30 text-white placeholder:text-blue-300/60 focus:border-cyan-400 focus:ring-cyan-400/20 transition-all duration-200 ${
                     errors.email ? "border-red-400 focus:border-red-400 focus:ring-red-400/20" : ""
                   }`}
-                  onChange={(e) => validateField("email", e.target.value)}
+                  onChange={(e) => {
+                    validateField("email", e.target.value)
+                    handleInputChange(e.target.name,e.target.value)
+
+                  }}
                 />
                 {errors.email && (
                   <p className="text-red-400 text-sm flex items-center gap-1">
@@ -195,7 +232,10 @@ function AdminUserDialog() {
                     className={`bg-slate-800/50 border-blue-500/30 text-white placeholder:text-blue-300/60 focus:border-cyan-400 focus:ring-cyan-400/20 transition-all duration-200 pr-10 ${
                       errors.password ? "border-red-400 focus:border-red-400 focus:ring-red-400/20" : ""
                     }`}
-                    onChange={(e) => validateField("password", e.target.value)}
+                    onChange={(e) => {
+                      validateField("password", e.target.value)
+                      handleInputChange(e.target.name,e.target.value)
+                      }}
                   />
                   <button
                     type="button"
@@ -235,7 +275,11 @@ function AdminUserDialog() {
                     className={`bg-slate-800/50 border-blue-500/30 text-white placeholder:text-blue-300/60 focus:border-cyan-400 focus:ring-cyan-400/20 transition-all duration-200 pr-10 ${
                       errors.confirmPassword ? "border-red-400 focus:border-red-400 focus:ring-red-400/20" : ""
                     }`}
-                    onChange={(e) => validateField("confirmPassword", e.target.value)}
+                    onChange={(e) => {
+                      validateField("confirmPassword", e.target.value)
+                      handleInputChange(e.target.name,e.target.value)
+
+                    }}
                   />
                   <button
                     type="button"
@@ -279,7 +323,7 @@ function AdminUserDialog() {
                 Create User
               </Button>
             </DialogFooter>
-          </form>
+          </div>
         </DialogContent>
       </Dialog>
   )

@@ -17,6 +17,8 @@ export const adminSignInApi = createApi({
     })
 })
 
+
+
 export const isAdminJwtValid=createApi({
     reducerPath:'isAdminJwtValid',
     baseQuery:fetchBaseQuery({
