@@ -56,7 +56,7 @@ const signupController = async (req, res) => {
       password,
       confirmPassword,
     });
-    console.log(validatedResults);
+    // console.log(validatedResults);
     if (!validatedResults.isValid) {
       return res
         .status(STATUSCODES.BAD_REQUEST)

@@ -29,7 +29,10 @@ const loginController = async(req,res)=>{
         }
         console.log('admin logged in ')
         const token = jwt.sign({email},process.env.JWT_SECRET,{expiresIn:'1h'})
-        return res.status(statusCodes.OK).json({message:messages.LOGIN_SUCCESS,token})
+        console.log(adminData,'admin login data from mongo',adminData.mobile)
+        return res.status(statusCodes.OK).json({message:messages.LOGIN_SUCCESS,token,adminDetails:{
+            adminEmail,adminName:adminData.name,adminPhone:adminData.mobile
+        }})
     } catch (error) {
         console.log(error)
         return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({error:MESSAGES.INTERNAL_SERVER_ERROR})

@@ -4,13 +4,23 @@ const authSlice = createSlice({
     name:'auth',
     initialState:{
         token: localStorage.getItem('adminToken')|| null,
-        isAuthenticated :false
+        isAuthenticated :false,
+        adminName:'',
+        adminEmail:'',
+        adminPhone:'',
+
     },
     reducers:{
         setToken:(state,action)=>{
             state.token=action.payload
             localStorage.setItem('adminToken',action.payload)
             state.isAuthenticated=true;
+        },
+        setAdminDetails:(state,action)=>{
+            console.log(action.payload,'auth slice admin data')
+            state.adminEmail=action.payload.adminEmail
+            state.adminName=action.payload.adminName
+            state.adminPhone=action.payload.adminPhone
         },
         logout:(state)=>{
             state.token=null;
@@ -20,5 +30,5 @@ const authSlice = createSlice({
     }
 })
 
-export const {setToken,logout} = authSlice.actions
+export const {setToken,logout,setAdminDetails} = authSlice.actions
 export default authSlice.reducer

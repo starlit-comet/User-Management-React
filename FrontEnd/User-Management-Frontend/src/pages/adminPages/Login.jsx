@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, Shield, Lock } from "lucide-react"
-import { setToken } from "@/features/jwt/authSlice"
+import { setToken,setAdminDetails } from "@/features/jwt/authSlice"
 import { useSignInAdminMutation,useVerifyAdminJwtQuery } from "@/features/adminLogin/adminSigninSlice"
 import { toast } from "sonner"
 import { Navigate, useNavigate } from "react-router-dom"
@@ -61,6 +61,8 @@ import { Navigate, useNavigate } from "react-router-dom"
       }else if(res.data?.message && res.data?.token){
         const jwtToken = res.data.token
         dispatch(setToken(jwtToken))
+        dispatch(setAdminDetails(res.data.adminDetails))
+
         toast.success("Login Success")
         signInFormDataRef.current={...initialFormData}
         navigate('/admin/dashboard')

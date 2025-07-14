@@ -12,12 +12,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
+
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, UserPlus, Shield } from "lucide-react"
 import { useCreateUserMutation } from "@/features/user_log_page/userLogApiSlice"
 import { toast } from "sonner"
 function AdminUserDialog() {
+  const dialogClose = DialogPrimitive.Close
   const [createUser,{isLoading,isError,isSuccess}] = useCreateUserMutation()
   const initialFormData={
     name: "",
@@ -38,14 +41,21 @@ function AdminUserDialog() {
 //     const file = e.target.files[0]
 //     setSelectedFile(file)
 //   }
- async function handleCreateUser(){
+ async function handleCreateUser({users}){
     try {
       const res = await createUser(signUpFormData).unwrap();
 
       // console.log('usercreated')
-
+      console.log(res.userData,'New User Data')
       toast.success("success! new User created");
       signUpFormData.current={...initialFormData}
+      document.getElementById("name").innerText=''
+      if(res?.UserData){
+
+        users.push(res.userData)
+      }
+      DialogPrimitive.close()
+
     } catch (error) {
       console.log(error, "error data");
       if (error.error) {
