@@ -12,15 +12,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, UserPlus, Shield } from "lucide-react"
 import { useCreateUserMutation } from "@/features/user_log_page/userLogApiSlice"
 import { toast } from "sonner"
-function AdminUserDialog() {
-  const dialogClose = DialogPrimitive.Close
+function AdminUserDialog({open,onOpenchange}) {
   const [createUser,{isLoading,isError,isSuccess}] = useCreateUserMutation()
   const initialFormData={
     name: "",
@@ -49,12 +47,11 @@ function AdminUserDialog() {
       console.log(res.userData,'New User Data')
       toast.success("success! new User created");
       signUpFormData.current={...initialFormData}
-      document.getElementById("name").innerText=''
+      onOpenchange.setOpen(false)
       if(res?.UserData){
 
         users.push(res.userData)
       }
-      DialogPrimitive.close()
 
     } catch (error) {
       console.log(error, "error data");
@@ -111,7 +108,7 @@ function AdminUserDialog() {
   }
 
   return (
-      <Dialog>
+      <Dialog >
         <DialogTrigger asChild>
           <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white flex items-center gap-2">
             <UserPlus className="w-4 h-4" />

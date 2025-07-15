@@ -24,6 +24,7 @@ import {
   Activity,
 } from "lucide-react";
 const UsersSection = () => {
+  const[open,setOpen] = useState(false)
   let users = [];
   const adminToken = localStorage.getItem("adminToken");
   const { data, isError, isSuccess } = useGetAllUsersDataQuery(undefined, {
@@ -62,7 +63,7 @@ const UsersSection = () => {
             </p>
           </div>
       
-      <DialogDemo users={users} />
+      <DialogDemo users={users} open={open} onOpenChange={setOpen} />
           {/* <Button
             onClick={DialogDemo}
             className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white"

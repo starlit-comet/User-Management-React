@@ -64,7 +64,7 @@ const NotFoundPage = () => {
             <Button
               variant="outline"
               className="w-full border-gray-300 hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 bg-transparent"
-              onClick={() => (window.location.href = "/")}
+              onClick={() => (window.location.href = "/login")}
             >
               <Home className="w-4 h-4 mr-2" />
               Go Home
