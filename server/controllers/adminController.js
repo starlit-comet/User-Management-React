@@ -63,10 +63,32 @@ const verifyJwtToken = async (req,res)=>{
 
 const deleteUser = async(req,res)=>{
     try {
-        console.log(req,'req in admin delete user')
+
+        // console.log(req.jwtResult,req.jwtResultValid)
+        if(req.jwtResultValid){
+        const {email} = req.jwtResult
+        const adminData = await adminSchema.findOne({email})
+        if(!adminData) return res.status(STATUS_CODES.UNAUTHORIZED).json({message:MESSAGES.ADMIN_DATA_NOT_FOUND})
+        const {userId} = req.body
+        console.log(userId,'userrr id')
+        const deletedUser = await userSchema.findByIdAndDelete(userId)
+        if(!deletedUser) return res.status(STATUS_CODES.NOT_FOUND).json({message:MESSAGES.USER_NOT_FOUND})
+            // console.log('UserDeleted success',deletedUser)
+        return res.status(STATUS_CODES.OK).json({message:MESSAGES.USER_DELETED_SUCCESSFULLY})
+        }
+      
     } catch (error) {
-        
+        console.log(error)
+        res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({message:MESSAGES.INTERNAL_SERVER_ERROR})
     }
 }
 
-module.exports={loginController,getUsersData,verifyJwtToken,deleteUser}
+const editUser = async(req,res)=>{
+    try {
+        console.log('edit user try')
+    } catch (error) {
+        console.log(error,'edit user error')
+    }
+}
+
+module.exports={loginController,getUsersData,verifyJwtToken,deleteUser,editUser}

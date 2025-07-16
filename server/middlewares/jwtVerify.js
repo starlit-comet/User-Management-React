@@ -7,21 +7,15 @@ const verifyToken = (req,res,next)=>{
     try {
         req.jwtResultValid=false
         const reqToken = req.headers?.authorization.split(' ')[1]
-        
-        console.log(reqToken, 'token in mdd')
-        const result = jwt.verify(reqToken,process.env.JWT_SECRET, (err,decoded)=>{
-            if(err){
-                if(err.name==="TokenExpiredError"){
-                    return res.status(STATUS_CODES.UNAUTHORIZED).json({message:MESSAGES.JWT_EXPIRED})
-                }
-                return res.status(STATUS_CODES.FORBIDDEN).json({message:MESSAGES.INVALID_JWT_TOKEN})
-            }
-        })
+       
+        // console.log(reqToken, 'token in mdd')
+        const result= jwt.verify(reqToken,process.env.JWT_SECRET)
         req.jwtResult = result
+        // console.log(result,'result in md')
         req.jwtResultValid=true
         next()
     } catch (error) {
-        // console.log(error)
+        console.log(error)
         return res.status(STATUS_CODES.UNAUTHORIZED).json({message:RES_MESSAGES.USER_NOT_AUTHENTICATED,data:"jwt middle ware",error})
     }
 }

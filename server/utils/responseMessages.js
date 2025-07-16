@@ -158,7 +158,8 @@ const MESSAGES = Object.freeze({
    INVALID_FILE_FORMAT:"Invalid file format",
    FILE_SIZE_EXCEEDED:'File Size exceeded',
    JWT_EXPIRED:"Jwt Expired",
-   INVALID_JWT_TOKEN:"Invalid Jwt Token"
+   INVALID_JWT_TOKEN:"Invalid Jwt Token",
+   USER_DELETED_SUCCESSFULLY:"User Deleted SuccessFully",
 
    
 

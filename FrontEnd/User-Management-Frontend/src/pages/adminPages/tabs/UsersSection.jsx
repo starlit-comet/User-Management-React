@@ -2,22 +2,14 @@ import React from "react";
 
 import { useState,useEffect,useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { useGetAllUsersDataQuery } from "@/features/adminLogin/adminSigninSlice";
+import { useGetAllUsersDataQuery,useRemoveUserMutation } from "@/features/adminLogin/adminSigninSlice";
 
 import DialogDemo from './AddNewUser'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
+import DeleteUser from "./DeleteUser";
 
 import {
   LayoutDashboard,
@@ -41,19 +33,23 @@ const UsersSection = () => {
   const [debouncedSearchQuery,setDebouncedSearchQuery] = useState('')
   const [currPage, setCurrPage] = useState(1)
   const [usersPerPage, setUsersPerPage] = useState(5)
-  let users = [];
+  const [users,setUsers] = useState([])
   const adminToken = localStorage.getItem("adminToken");
   const { data, isError, isSuccess } = useGetAllUsersDataQuery(undefined, {
     skip: !adminToken,
   });
-
-  if (isSuccess) {
-    users = data?.usersData;
+  useEffect(()=>{
+      if (isSuccess && data?.usersData) {
+    setUsers( data.usersData)
   }
-  console.log(users, data, "users data");
+  },[isSuccess,data])
+
+  // console.log(users, data, "users data");
   if (adminToken) {
   }
-
+  
+  
+  
   useEffect(()=>{
     const timer = setTimeout(()=>{
       setDebouncedSearchQuery(searchQuery)
@@ -61,22 +57,20 @@ const UsersSection = () => {
     },300)
     return ()=>clearTimeout(timer)
   },[searchQuery])
-
+  
   const filterdUsers = useMemo(()=>{
     return users.filter(
       (user)=>
         user.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
+      user.email.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
     )
   },[users,debouncedSearchQuery])
-
+  
   const totalPages = Math.ceil(filterdUsers.length / usersPerPage)
   const startIndex = (currPage-1) * usersPerPage
   const paginatedUsers = filterdUsers.slice(startIndex,startIndex+usersPerPage)
-  function handleDeleteUser (){
-
-  }
-
+  
+  
   const getStatusColor = (status) => {
     switch (status) {
       case false:
@@ -215,13 +209,14 @@ const UsersSection = () => {
                               Unblock
                             </Button>
                           )}
-                          <Button onClick={handleDeleteUser}
+                          <DeleteUser setUsers={setUsers} user={user}/>
+                          {/* <Button onClick={()=>handleDeleteUser(user._id)}
                             size="sm"
                             variant="ghost"
                             className="text-red-300 hover:text-white hover:bg-red-500/20"
                           >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
+                            
+                          </Button> */}
                         </div>
                       </td>
                     </tr>

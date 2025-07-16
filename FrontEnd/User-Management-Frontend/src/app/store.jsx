@@ -4,7 +4,7 @@ import authStateReducer from '../features/jwt/authSlice'
 import userStateReducer from '../features/jwt/userJwtSlice'
 import signStateReducer from '../features/user_log_page/credentialsSlice'
 import { userSignUpApi,userSignInApi,userProfilePicUploadApi } from '@/features/user_log_page/userLogApiSlice'
-import { adminSignInApi,isAdminJwtValid,getUsersData, } from '@/features/adminLogin/adminSigninSlice'
+import { adminSignInApi,isAdminJwtValid,getUsersData,deleteUser } from '@/features/adminLogin/adminSigninSlice'
 export default configureStore({
   reducer: {
     signState:signStateReducer,
@@ -14,6 +14,7 @@ export default configureStore({
     [userSignUpApi.reducerPath]:userSignUpApi.reducer,
     [userSignInApi.reducerPath]:userSignInApi.reducer,
     [adminSignInApi.reducerPath]:adminSignInApi.reducer,
+    [deleteUser.reducerPath]:deleteUser.reducer,
     [isAdminJwtValid.reducerPath]:isAdminJwtValid.reducer,
     [getUsersData.reducerPath]:getUsersData.reducer,
     [userProfilePicUploadApi.reducerPath]:userProfilePicUploadApi.reducer
@@ -22,6 +23,7 @@ export default configureStore({
   middleware:(getDefaultMiddleware)=>getDefaultMiddleware()
           .concat(userSignUpApi.middleware)
           .concat(userSignInApi.middleware)
+          .concat(deleteUser.middleware)
           // .concat(userApi.middleware)
           .concat(adminSignInApi.middleware)
           .concat(isAdminJwtValid.middleware)

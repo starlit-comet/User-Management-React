@@ -66,17 +66,25 @@ export const deleteUser = createApi({
         }
     }),
     endpoints:(builder)=>({
+        // const adminToken = localStorage.getItem('adminToken')
         removeUser:builder.mutation({
             query:(formData)=>({
                 url:'/admin/deleteUser',
                 method:'DELETE',
                 body:formData,
+                headers:{'Authorization':`Bearer ${localStorage.getItem("adminToken")}`}
             })
         })
     })
+})
+
+export const editUser = createApi({
+    reducerPath:'editUser',
+    baseQuery
 })
 
 
 export const {useSignInAdminMutation}  = adminSignInApi
 export const {useVerifyAdminJwtQuery}  = isAdminJwtValid
 export const {useGetAllUsersDataQuery} = getUsersData
+export const {useRemoveUserMutation} = deleteUser
