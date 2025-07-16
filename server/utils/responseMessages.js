@@ -156,7 +156,9 @@ const MESSAGES = Object.freeze({
    USER_DATA_CHANGE_SUCCESS:"User details changed successfully",
    NO_FILE_PROVIDED:"No file Provided",
    INVALID_FILE_FORMAT:"Invalid file format",
-   FILE_SIZE_EXCEEDED:'File Size exceeded'
+   FILE_SIZE_EXCEEDED:'File Size exceeded',
+   JWT_EXPIRED:"Jwt Expired",
+   INVALID_JWT_TOKEN:"Invalid Jwt Token"
 
    
 

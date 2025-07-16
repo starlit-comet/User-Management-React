@@ -73,3 +73,59 @@ export const {useCreateUserMutation} = userSignUpApi
 export const {useSignInUserMutation} = userSignInApi
 export const {useJwtAuthUserMutation} = isUserJwtValid
 export const{useAddProfilePicMutation} = userProfilePicUploadApi
+
+
+
+// import { createApi,fetchBaseQuery } from "@reduxjs/toolkit/query";
+
+// export const userApi = createApi({
+//     reducerPath:'userApi',
+//     baseQuery:fetchBaseQuery({
+//         baseUrl:'http://localhost:5678',
+//         prepareHeaders:(headers)=>{
+//             const token = localStorage.getItem('userToken')
+//             if(token){
+//                 headers.set('Authorization',`Bearer ${token}`)
+//             }
+//             return headers
+//         }
+//     }),
+//     endpoints:(builder)=>({
+//         createUser:builder.mutation({
+//             query:(formData)=>({
+//                 url:'/user/signup',
+//                 method:'POST',
+//                 body:formData,
+//             })
+//         }),
+//         signInUser:builder.mutation({
+//             query:(formData)=>({
+//                 url:'/user/login',
+//                 method:"POST",
+//                 body:formData
+//             })
+//         }),
+//         addProfilePic:builder.mutation({
+//             query:(formData)=>({
+//                 url:'/user/upload/profileImage',
+//                 method:'POST',
+//                 body:formData
+//             })
+//         }),
+//         isJwtValid:builder.query({
+//             query:()=>({
+//                 url:'/user/jwtCheck',
+//                 method:"GET"
+//             })
+//         })
+//     })
+// })
+
+// export  const {
+//     useCreateUserMutation,
+//     useSignInUserMutation,
+//     useAddProfilePicMutation,
+//     useIsJwtValidQuery,
+// } = userApi
+
+// export default  userApi

@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const loginSanitiser = require('../helpers/loginSanitizer.js')
 const adminSchema = require('../models/AdminDataScheme.js')
 const userSchema = require('../models/UserDataScheme.js');
-const  STATUS_CODES  = require('../utils/statuscodes.js');
+const STATUS_CODES  = require('../utils/statuscodes.js');
 const MESSAGES = require('../utils/responseMessages.js');
 
 const loginController = async(req,res)=>{
@@ -49,7 +49,7 @@ const getUsersData=async(req,res)=>{
     }
 }
 const verifyJwtToken = async (req,res)=>{
-    console.log(req.headers)
+    // console.log(req.headers)
     const token = req.headers.authorization?.split(' ')[1]
     if(!token) return res.status(STATUS_CODES.UNAUTHORIZED)
     try {
@@ -61,4 +61,12 @@ const verifyJwtToken = async (req,res)=>{
     }
 }
 
-module.exports={loginController,getUsersData,verifyJwtToken}
+const deleteUser = async(req,res)=>{
+    try {
+        console.log(req,'req in admin delete user')
+    } catch (error) {
+        
+    }
+}
+
+module.exports={loginController,getUsersData,verifyJwtToken,deleteUser}

@@ -8,8 +8,8 @@ import {
   changeToSignUp,
   toggleShowPassword,
   toggleShowConfirmPassword,
-} from "./credentialsSlice";
-import { setUserDetails, setUserToken } from "../jwt/userJwtSlice";
+} from "../../features/user_log_page/credentialsSlice";
+import { setUserDetails, setUserToken } from "../../features/jwt/userJwtSlice";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -27,10 +27,10 @@ import { Eye, EyeOff } from "lucide-react";
 import {
   useCreateUserMutation,
   useSignInUserMutation,
-} from "./userLogApiSlice";
+} from "../../features/user_log_page/userLogApiSlice";
 import { useNavigate } from "react-router-dom";
 
-function EnhancedLoginCard() {
+function LoginCard() {
   // const [signState,setSignState] = useState('Sign In')
   const navigate = useNavigate();
   const initialFormData = {
@@ -58,8 +58,7 @@ function EnhancedLoginCard() {
   const dispatch = useDispatch();
 
   const userData = useRef({ name: "", email: "" });
-  const [signInUser, { isSignInLoading, isSignInSuccess, isSignInError }] =
-    useSignInUserMutation();
+  const [signInUser, { isLoading, isSignInSuccess, isSignInError }] = useSignInUserMutation();
   const handleSignInClick = async () => {
     if (signState !== "Sign In") return;
     const signinEmail = signUpFormDataRef.current.email;
@@ -306,7 +305,7 @@ function EnhancedLoginCard() {
             <>
               <Button
                 onClick={handleSignInClick}
-                disabled={isSignInLoading}
+                disabled={isLoading}
                 type="submit"
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-2.5 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
               >
@@ -345,4 +344,4 @@ function EnhancedLoginCard() {
   );
 }
 
-export default EnhancedLoginCard;
+export default LoginCard;

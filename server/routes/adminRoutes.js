@@ -7,4 +7,5 @@ const adminController = require('../controllers/adminController')
 router.get('/getUsersData',adminController.getUsersData)
 router.post('/login',adminController.loginController)
 router.get('/verifyJwt',adminController.verifyJwtToken)
+router.delete('/delteteUser',adminController.verifyJwtToken,adminController.deleteUser)
 module.exports = router
