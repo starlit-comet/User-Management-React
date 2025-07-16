@@ -11,12 +11,6 @@ import {
   Settings,
   LogOut,
   Shield,
-  Eye,
-  Edit,
-  Trash2,
-  Mail,
-  Calendar,
-  Activity,
 } from "lucide-react"
 import SettingsSection from "./tabs/SettingsSection"
 import HomeSection from "./tabs/HomeSection"

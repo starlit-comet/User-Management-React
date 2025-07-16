@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, UserPlus, Shield } from "lucide-react"
 import { useCreateUserMutation } from "@/features/user_log_page/userLogApiSlice"
 import { toast } from "sonner"
-function AdminUserDialog({open,onOpenchange}) {
+function AdminUserDialog({open,onOpenChange}) {
   const [createUser,{isLoading,isError,isSuccess}] = useCreateUserMutation()
   const initialFormData={
     name: "",
@@ -47,7 +47,7 @@ function AdminUserDialog({open,onOpenchange}) {
       console.log(res.userData,'New User Data')
       toast.success("success! new User created");
       signUpFormData.current={...initialFormData}
-      onOpenchange.setOpen(false)
+      setOpen(false)
       if(res?.UserData){
 
         users.push(res.userData)

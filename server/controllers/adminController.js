@@ -85,9 +85,19 @@ const deleteUser = async(req,res)=>{
 
 const editUser = async(req,res)=>{
     try {
-        console.log('edit user try')
+        const{id}= req.params
+        const updatedName = req.body.name
+        const updatedEmail = req.body.email
+        const user = await userSchema.findOne({_id:id},'-hashedPassword')
+        if(!user) return res.status(STATUS_CODES.NOT_FOUND).json({message:MESSAGES.USER_NOT_FOUND})
+        user.email= updatedEmail
+        user.name= updatedName
+        await user.save()
+        console.log('updated user details: ', user)
+        res.status(STATUS_CODES.OK).json({message:MESSAGES.USER_DATA_CHANGE_SUCCESS,user})
     } catch (error) {
         console.log(error,'edit user error')
+        return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({messages:MESSAGES.INTERNAL_SERVER_ERROR})
     }
 }
 

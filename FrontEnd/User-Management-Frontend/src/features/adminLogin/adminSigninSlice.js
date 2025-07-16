@@ -80,11 +80,29 @@ export const deleteUser = createApi({
 
 export const editUser = createApi({
     reducerPath:'editUser',
-    baseQuery
+    baseQuery:fetchBaseQuery({
+        baseUrl:'http://localhost:5678',
+        prepareHeaders:(headers)=>{
+            const adminToken = localStorage.getItem("adminToken")
+            headers.set("Authorization",`Bearer ${adminToken}`)
+            return headers
+        }
+    }),
+    endpoints:(builder)=>({
+        editUserDetails:builder.mutation({
+            query:({userId,updatedData})=>({
+                url:`/admin/editUser/${userId}`,
+                method:"PATCH",
+                body:updatedData,
+                
+            })
+        })
+    })
 })
 
 
 export const {useSignInAdminMutation}  = adminSignInApi
 export const {useVerifyAdminJwtQuery}  = isAdminJwtValid
 export const {useGetAllUsersDataQuery} = getUsersData
-export const {useRemoveUserMutation} = deleteUser
+export const {useRemoveUserMutation}   = deleteUser
+export const {useEditUserDetailsMutation} = editUser

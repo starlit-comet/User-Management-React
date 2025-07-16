@@ -10,25 +10,16 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import DeleteUser from "./DeleteUser";
-
+import EditUserData from "./EditUserData";
 import {
-  LayoutDashboard,
   Users,
-  Settings,
-  LogOut,
-  Shield,
-  Eye,
-  Edit,
   ChevronLeft,
   ChevronRight,
   Search,
-  Trash2,
   Mail,
-  Calendar,
-  Activity,
 } from "lucide-react";
 const UsersSection = () => {
-  const[open,setOpen] = useState(false)
+  const [open,setOpen] = useState(false)
   const [searchQuery,setSearchQuery] = useState('')
   const [debouncedSearchQuery,setDebouncedSearchQuery] = useState('')
   const [currPage, setCurrPage] = useState(1)
@@ -97,7 +88,7 @@ const UsersSection = () => {
             </p>
           </div>
       
-      <DialogDemo users={users} open={open} onOpenChange={setOpen} />
+      <DialogDemo users={users} open={open} onOpenChange={()=>setOpen(false)} />
          
         </div>
         <Card className="bg-slate-800/40 backdrop-blur-sm border-blue-500/30">
@@ -210,6 +201,7 @@ const UsersSection = () => {
                             </Button>
                           )}
                           <DeleteUser setUsers={setUsers} user={user}/>
+                          <EditUserData user={user} index={index} users={users}/>
                           {/* <Button onClick={()=>handleDeleteUser(user._id)}
                             size="sm"
                             variant="ghost"
