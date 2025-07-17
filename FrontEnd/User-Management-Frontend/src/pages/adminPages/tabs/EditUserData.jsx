@@ -1,7 +1,8 @@
 "use client"
 
-import { useState,useRef, useEffect } from "react"
+import { useState,useRef, useEffect,useContext } from "react"
 import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
 import {
   Dialog,
   DialogClose,
@@ -12,31 +13,37 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-
+import  {UsersContext}  from "./UsersSection"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, UserPlus, Shield,Edit } from "lucide-react"
 import { useEditUserDetailsMutation } from "@/features/adminLogin/adminSigninSlice"
 import { toast } from "sonner"
-function EditUserData({open,onOpenchange,users,user,index}) {
+function EditUserData({open,onOpenchange,user,index}) {
+    const BtnRef=useRef(null)
+
+    const {users,setUsers} = useContext(UsersContext)
+
    const userId = user._id
   const [editUserDetails,{isLoading,isError,isSuccess}] = useEditUserDetailsMutation()
   const initialFormData={
     name: user.name,
     email: user.email,
+    blocked:user.isBlocked
 
     }
     const [email,setEmail] = useState(user.email)
     const [name,setName] = useState(user.name)
+    const [blocked,setBlocked] = useState(user.isBlocked)
 //   const [showPassword, setShowPassword] = useState(false)
 //   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 //   const [selectedFile, setSelectedFile] = useState(null)
   const signUpFormData = useRef({...initialFormData})
   const [isChangeExists,setIsChangeExists] = useState(true)
   useEffect(()=>{
-    if(email!==user.email || name!==user.name) setIsChangeExists(false)
-    if(email===user.email && name===user.name) setIsChangeExists(true)
-  },[email,name])
+    if(email!==user.email || name!==user.name || blocked !==user.isBlocked ) setIsChangeExists(false)
+    if(email===user.email && name===user.name && blocked === user.isBlocked) setIsChangeExists(true)
+  },[email,name,blocked])
   const [errors, setErrors] = useState({ name:'',email:'' })
   const handleInputChange=(name,value)=>{
     // const{name,value}=e.target
@@ -55,11 +62,22 @@ async function handleEditUser(){
       // console.log('usercreated')
       console.log(res.user,'Edited User Data')
       toast.success("success! User Info Updated");
+      closeModalAfterSuccess()
       signUpFormData.current={email:res.user.email,name:res.user.name}
-      onOpenchange.setOpen(false)
+    //   onOpenchange.setOpen(false)
       if(res?.user){
-
-        users[index]=res.user
+        const newUsers =new Array()
+        for(let x=0;x<users.length;x++){
+            if(users[x]._id!==res.user._id){
+                newUsers[x]=users[x]
+            }else newUsers[x]=res.user
+        }
+        setUsers(newUsers)
+        // users[index]=res.user
+        console.log(newUsers,'updated users data')
+    //     if(BtnRef.current){
+    //     BtnRef.current.click()
+    // }
       }
 
     } catch (error) {
@@ -81,7 +99,11 @@ async function handleEditUser(){
       }
     }
   }
-
+  function closeModalAfterSuccess(){
+    if(BtnRef.current){
+        BtnRef.current.click()
+    }
+  }
   const validateField = (name, value) => {
     let error = ""
 
@@ -214,6 +236,10 @@ async function handleEditUser(){
                   </p>
                 )}
               </div>
+              <div className="space-y-2 text-slate-100">
+                <Switch id="user-blocked" checked={blocked} onCheckedChange={()=>setBlocked(!blocked)} />
+                <Label htmlFor="user-blocked" className="text-white" /> Change active state
+              </div>
 
               {/* Password Field
               <div className="space-y-2">
@@ -308,9 +334,12 @@ async function handleEditUser(){
             <DialogFooter className="gap-3">
               <DialogClose asChild>
                 <Button
+                  ref={BtnRef}
                   onClick={()=>{
+
                     setEmail(user.email)
                     setName(user.name)
+                    // closeModal()
                   }}
                   variant="outline"
                   className="bg-slate-800/50 border-blue-500/30 text-blue-200 hover:bg-slate-700/50 hover:text-white transition-all duration-200"
@@ -318,7 +347,7 @@ async function handleEditUser(){
                   Cancel
                 </Button>
               </DialogClose>
-              <Button
+              <Button 
                 disabled={isChangeExists}
                 onClick={handleEditUser}
                 className="bg-gradient-to-r disabled:bg-red-400 from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-blue-500/25"

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useState,useEffect,useMemo } from "react";
+import { useState,useEffect,useMemo,createContext } from "react";
 import { Button } from "@/components/ui/button";
 import { useGetAllUsersDataQuery,useRemoveUserMutation } from "@/features/adminLogin/adminSigninSlice";
 
@@ -18,6 +18,7 @@ import {
   Search,
   Mail,
 } from "lucide-react";
+export const UsersContext = createContext([]);
 const UsersSection = () => {
   const [open,setOpen] = useState(false)
   const [searchQuery,setSearchQuery] = useState('')
@@ -87,8 +88,10 @@ const UsersSection = () => {
               Manage user accounts and permissions
             </p>
           </div>
-      
-      <DialogDemo users={users} open={open} onOpenChange={()=>setOpen(false)} />
+    <UsersContext value={{users,setUsers}} >
+
+      <DialogDemo  open={open} onOpenChange={()=>setOpen(false)} />
+    </UsersContext>
          
         </div>
         <Card className="bg-slate-800/40 backdrop-blur-sm border-blue-500/30">
@@ -181,7 +184,7 @@ const UsersSection = () => {
 
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          {!user.isBlocked ? (
+                          {/* {!user.isBlocked ? (
                             <Button
                               size="sm"
                               variant="ghost"
@@ -199,9 +202,12 @@ const UsersSection = () => {
                             >
                               Unblock
                             </Button>
-                          )}
+                          )} */}
                           <DeleteUser setUsers={setUsers} user={user}/>
-                          <EditUserData user={user} index={index} users={users}/>
+                          <UsersContext value={{users,setUsers}} >
+
+                          <EditUserData user={user} index={index} />
+                          </UsersContext>
                           {/* <Button onClick={()=>handleDeleteUser(user._id)}
                             size="sm"
                             variant="ghost"

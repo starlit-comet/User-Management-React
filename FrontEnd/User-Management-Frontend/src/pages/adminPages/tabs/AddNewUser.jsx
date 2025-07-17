@@ -1,6 +1,6 @@
 "use client"
 
-import { useState,useRef } from "react"
+import { useState,useRef,useContext } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -12,13 +12,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {UsersContext} from './UsersSection'
 import { Eye, EyeOff, UserPlus, Shield } from "lucide-react"
 import { useCreateUserMutation } from "@/features/user_log_page/userLogApiSlice"
 import { toast } from "sonner"
-function AdminUserDialog({open,onOpenChange}) {
+function AdminUserDialog() {
+  const btnRef = useRef(null)
+  const{users,setUsers} = useContext(UsersContext)
   const [createUser,{isLoading,isError,isSuccess}] = useCreateUserMutation()
   const initialFormData={
     name: "",
@@ -39,19 +41,27 @@ function AdminUserDialog({open,onOpenChange}) {
 //     const file = e.target.files[0]
 //     setSelectedFile(file)
 //   }
- async function handleCreateUser({users}){
+ async function handleCreateUser({}){
     try {
       const res = await createUser(signUpFormData).unwrap();
 
       // console.log('usercreated')
-      console.log(res.userData,'New User Data')
+      // console.log(res.userData,'New User Data')
       toast.success("success! new User created");
       signUpFormData.current={...initialFormData}
-      setOpen(false)
-      if(res?.UserData){
-
-        users.push(res.userData)
-      }
+      // setOpen(false)
+     
+        const newAry = new Array(users.length+1)
+        for(let x=0;x<users.length;x++){
+          newAry[x]=users[x]
+        }
+        newAry[users.length]=res.userData
+        // console.log(users,'usersData changed',newAry)
+       setUsers(newAry)
+       if(btnRef.current){
+        btnRef.current.click()
+       }
+      
 
     } catch (error) {
       console.log(error, "error data");
@@ -316,6 +326,7 @@ function AdminUserDialog({open,onOpenChange}) {
             <DialogFooter className="gap-3">
               <DialogClose asChild>
                 <Button
+                  ref={btnRef}
                   variant="outline"
                   className="bg-slate-800/50 border-blue-500/30 text-blue-200 hover:bg-slate-700/50 hover:text-white transition-all duration-200"
                 >

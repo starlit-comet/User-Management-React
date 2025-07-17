@@ -86,12 +86,18 @@ const deleteUser = async(req,res)=>{
 const editUser = async(req,res)=>{
     try {
         const{id}= req.params
-        const updatedName = req.body.name
-        const updatedEmail = req.body.email
+        console.log(req.body)
+        let updatedName = req.body.name.trim()
+        let updatedEmail = req.body.email.trim()
+        let updatedStatus = req.body.isBlocked
+        if(!updatedName || !updatedEmail) return res.status(STATUS_CODES.BAD_REQUEST).json({message:MESSAGES.BAD_REQUEST})
         const user = await userSchema.findOne({_id:id},'-hashedPassword')
         if(!user) return res.status(STATUS_CODES.NOT_FOUND).json({message:MESSAGES.USER_NOT_FOUND})
         user.email= updatedEmail
         user.name= updatedName
+        if(user.isBlocked !== updatedStatus){
+            user.isBlocked = !user.isBlocked
+        }
         await user.save()
         console.log('updated user details: ', user)
         res.status(STATUS_CODES.OK).json({message:MESSAGES.USER_DATA_CHANGE_SUCCESS,user})
