@@ -61,8 +61,8 @@ A full-stack **User Management Application** built with **React**, **Node.js**, 
 
 ### 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/user-management-app.git
-cd user-management-app
+git clone https://github.com/starlit-comet/User-Management-React.git
+cd User-Management-React
 ```
 
 ### 2. Setup the backend:
@@ -95,14 +95,6 @@ npm start
 /uploads          -> (Optional if used for local backup)
 .env              -> Environment variables
 ```
-
----
-
-## 🚀 Live Demo
-
-🔗 [Live Site](https://your-deployed-url.com)  
-🔗 [Frontend Repo](https://github.com/your-username/frontend) *(if separate)*  
-🔗 [Backend Repo](https://github.com/your-username/backend) *(if separate)*
 
 ---
 
